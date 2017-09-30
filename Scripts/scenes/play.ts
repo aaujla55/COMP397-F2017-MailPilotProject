@@ -3,9 +3,9 @@ module scenes {
     // PRIVATE INSTANCE VARIABLES
     private _assetManager:createjs.LoadQueue;
 
-    private _playLabel:objects.Label;
-    private _backButton:objects.Button;
-    private _nextButton:objects.Button;
+    
+    private _plane:objects.Plane;
+    private _ocean:objects.Ocean;
 
     // PUBLIC PROPERTIES
 
@@ -20,33 +20,24 @@ module scenes {
 
     // PUBLIC METHODS
     public Start():void {
-      this._playLabel = new objects.Label("Game Playing", "40px", "Consolas", "#000000", 320, 240, true);
-      this._backButton = new objects.Button(this._assetManager, "backButton", 100, 340, true);
-      this._nextButton = new objects.Button(this._assetManager, "nextButton", 540, 340, true);
+      this._plane = new objects.Plane(this._assetManager);
+      this._ocean = new objects.Ocean(this._assetManager);
       this.Main();
     }
 
     public Update():number {
+      this._plane.update();
+      this._ocean.Update();
+      console.log(this.parent.stage.mouseX);
       return this._currentScene;
+      
     }
 
     public Main():void {
 
-      this.addChild(this._playLabel);
-
-      this.addChild(this._backButton);
-
-      this.addChild(this._nextButton);
-
-      this._backButton.on("click", () => {
-        this._currentScene = config.START;
-        this.removeAllChildren();
-      });
-
-      this._nextButton.on("click", () => {
-        this._currentScene = config.END;
-        this.removeAllChildren();
-      });
+      this.addChild(this._ocean);
+      this.addChild(this._plane);
+     
     }
   }
 }
